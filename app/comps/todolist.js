@@ -1,3 +1,4 @@
+//TodoList.js -> EditForm
 "use client";
 import React, { useState, useEffect } from "react";
 import EditForm from "./editForm";
@@ -46,6 +47,20 @@ const TodoList = () => {
     });
   });
 
+  // Function to handle task editing
+  const handleEdit = () => {
+    fetch("http://localhost:3000/api", {
+      method: "PATCH",
+      body: JSON.stringify({ id: selectedTask.id, task: task }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      handleEditFormToggle(); // Hide the edit form
+      setTask(""); // Reset the task state
+    });
+  };
+
   // Function to handle task deletion
   const handleDelete = (id) => {
     fetch("http://localhost:3000/api", {
@@ -59,20 +74,6 @@ const TodoList = () => {
         console.log(res);
       })
       .catch((error) => console.error("Error: ", error)); // Log any errors
-  };
-
-  // Function to handle task editing
-  const handleEdit = () => {
-    fetch("http://localhost:3000/api", {
-      method: "PATCH",
-      body: JSON.stringify({ id: selectedTask.id, task: task }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      handleEditFormToggle(); // Hide the edit form
-      setTask(""); // Reset the task state
-    });
   };
 
   // Function to handle task checkbox toggle
